@@ -1,0 +1,213 @@
+{% extends "FamilyTreeBundle::main.index.twig" %}
+
+{% block body %}
+    <a href="{{ path('fos_user_profile_show') }}" class="btn btn-primary">رفتن به پروفایل</a><br/><br/>
+    <div class="row">
+        <div class="span4">
+            <div class="well">
+                <h4>همسران</h4>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>عملیات</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for pertner in user.partners %}
+                        <tr>
+                            <td>{{ pertner.Person2.fname }}</td>
+                            <td>{{ pertner.Person2.lname }}</td>
+                            <td>
+                                <a href="{{ path('family_tree_show',{'id':pertner.Person2.id}) }}">مشاهده</a><br/>
+                                <a href="#" onclick="$('#id').val({{ pertner.Person2.id }});$('#relation').val('none');$('#formsearch').submit();">حذف</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{{ path('family_tree_register_new_family',{'relation':'partner'}) }}" class="btn btn-info" style="margin-right: 130px;">ثبت جدید</a>
+            </div>
+            <div class="well">
+                <h4>فرزندان</h4>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>جنسیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if user.gender == 'm' %}
+                        {% set children = user.ChildrenFromFather %}
+                    {% else %}
+                        {% set children = user.ChildrenFromMother %}
+                    {% endif %}
+                    {% for child in children %}
+                        <tr>
+                            <td>{{ child.fname }}</td>
+                            <td>{{ child.lname }}</td>
+                            <td>
+                                {% if child.gender == 'm' %}
+                                    مرد
+                                {% else %}
+                                    زن
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('family_tree_show',{'id':child.id}) }}">مشاهده</a><br/>
+                                <a href="#" onclick="$('#id').val({{ child.id }});$('#relation').val('none');$('#formsearch').submit();">حذف</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <a style="margin-right: 130px;" href="{{ path('family_tree_register_new_family',{'relation':'child'}) }}" class="btn btn-info">ثبت جدید</a>
+            </div>
+        </div>
+        <div class="span4">
+            <div class="well">
+                <h4>والدین</h4>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>نسبت</th>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>عملیات</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>پدر</td>
+                        {% if user.Father is not null %}
+                            <td>{{ user.Father.fname }}</td>
+                            <td>{{ user.Father.lname }}</td>
+                            <td>
+                                <a href="{{ path('family_tree_show',{'id':user.Father.id}) }}">مشاهده</a><br/>
+                                <a href="#" onclick="$('#id').val({{ user.Father.id }});$('#relation').val('none');$('#formsearch').submit();">حذف</a>
+                            </td>
+                        {% else %}
+                            <td>--</td>
+                            <td>--</td>
+                            <td><a href="{{ path('family_tree_register_new_family',{'relation':'father'}) }}">ثبت جدید</a></td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td>مادر</td>
+                        {% if user.Mother is not null %}
+                            <td>{{ user.Mother.fname }}</td>
+                            <td>{{ user.Mother.lname }}</td>
+                            <td>
+                                <a href="{{ path('family_tree_show',{'id':user.Mother.id}) }}">مشاهده</a><br/>
+                                <a href="#" onclick="$('#id').val({{ user.Mother.id }});$('#relation').val('none');$('#formsearch').submit();">حذف</a>
+                            </td>
+                        {% else %}
+                            <td>--</td>
+                            <td>--</td>
+                            <td><a href="{{ path('family_tree_register_new_family',{'relation':'mother'}) }}">ثبت جدید</a></td>
+                        {% endif %}
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="well">
+                <h4>برادران و خواهران</h4>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>جنسیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if user.Father is not null %}
+                        {% for sib in user.Father.getChildrenFromFather %}
+                        {% if sib != user %}
+                        <tr>
+                            <td>{{ sib.fname }}</td>
+                            <td>{{ sib.lname }}</td>
+                            <td>
+                                {% if sib.gender == 'm' %}
+                                    مرد
+                                {% else %}
+                                    زن
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('family_tree_show',{'id':sib.id}) }}">مشاهده</a><br/>
+                                <a href="#" onclick="$('#id').val({{ sib.id }});$('#relation').val('none');$('#formsearch').submit();">حذف</a>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+                <a style="margin-right: 130px;" href="{{ path('family_tree_register_new_family',{'relation':'sibling'}) }}" class="btn btn-info">ثبت جدید</a>
+            </div>
+        </div>
+        <div class="span4">
+            <div class="well">
+                <h4>جستجو</h4>
+
+                <form id="formsearch" action="{{ path('family_tree_register_family') }}" method="post">
+                    {{ form_label(form.fname, label|default(null), { 'label_attr': { 'class': 'label_inline' } }) }}
+                    {{ form_widget(form.fname) }}
+                    {{ form_errors(form.fname) }}
+                    <br/>
+                    {{ form_label(form.lname, label|default(null), { 'label_attr': { 'class': 'label_inline' } }) }}
+                    {{ form_widget(form.lname) }}
+                    {{ form_errors(form.lname) }}
+                    <input type="submit" class="btn" value="جستجو"/>
+                    {{ form_rest(form) }}
+                    <input type="hidden" id="id" name="id" value=""/>
+                    <input type="hidden" id="relation" name="relation" value=""/>
+                </form>
+            </div>
+            <div class="well">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>جنسیت</th>
+                        <th>مشاهده</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for person in persons %}
+                        <tr>
+                            <td>{{ person.fname }}</td>
+                            <td>{{ person.lname }}</td>
+                            <td>
+                                {% if person.gender == 'm' %}
+                                    مرد
+                                {% else %}
+                                    زن
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% set relationtype = render(controller('FamilyTreeBundle:Default:checkHasRelation', { 'person': person  })) %}
+                                <select style="width: 100px" onchange="$('#id').val({{ person.id }});$('#relation').val($(this).val());$('#formsearch').submit();">
+                                    <option {% if relationtype=='none'   %}selected{% endif %} value="none">هیچکدام</option>
+                                    {% if person.gender == 'm' %}<option {% if relationtype=='father' %}selected{% endif %} value="father">پدر</option>{% endif %}
+                                    {% if person.gender == 'f' %}<option {% if relationtype=='mother' %}selected{% endif %} value="mother">مادر</option>{% endif %}
+                                    <option {% if relationtype=='sibling' %}selected{% endif %} value="sibling">برادر یا خواهر</option>
+                                    <option {% if relationtype=='child'  %}selected{% endif %} value="child">فرزند</option>
+                                    {% if person.gender != user.gender %}<option {% if relationtype=='partner'%}selected{% endif %} value="partner">همسر</option>{% endif %}
+                                </select>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

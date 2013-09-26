@@ -1,0 +1,169 @@
+{% extends "FamilyTreeBundle::main.index.twig" %}
+
+{% block body %}
+<div class="row">
+    <div class="span4">
+        <div class="well">
+            <h4>همسران</h4>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>نام خانوادگی</th>
+                    <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for pertner in person.partners %}
+                    <tr>
+                        <td>{{ pertner.Person2.fname }}</td>
+                        <td>{{ pertner.Person2.lname }}</td>
+                        <td>
+                            <a href="{{ path('family_tree_show',{'id':pertner.Person2.id}) }}">مشاهده</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="well">
+            <h4>فرزندان</h4>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>نام خانوادگی</th>
+                    <th>جنسیت</th>
+                    <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if person.gender == 'm' %}
+                    {% set children = person.ChildrenFromFather %}
+                {% else %}
+                    {% set children = person.ChildrenFromMother %}
+                {% endif %}
+                {% for child in children %}
+                    <tr>
+                        <td>{{ child.fname }}</td>
+                        <td>{{ child.lname }}</td>
+                        <td>
+                            {% if child.gender == 'm' %}
+                                مرد
+                            {% else %}
+                                زن
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('family_tree_show',{'id':child.id}) }}">مشاهده</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="span4">
+        <div class="well">
+            <h4>والدین</h4>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>نسبت</th>
+                    <th>نام</th>
+                    <th>نام خانوادگی</th>
+                    <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>پدر</td>
+                    {% if person.Father is not null %}
+                        <td>{{ person.Father.fname }}</td>
+                        <td>{{ person.Father.lname }}</td>
+                        <td>
+                            <a href="{{ path('family_tree_show',{'id':person.Father.id}) }}">مشاهده</a>
+                        </td>
+                    {% else %}
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <td>مادر</td>
+                    {% if person.Mother is not null %}
+                        <td>{{ person.Mother.fname }}</td>
+                        <td>{{ person.Mother.lname }}</td>
+                        <td>
+                            <a href="{{ path('family_tree_show',{'id':person.Mother.id}) }}">مشاهده</a>
+                        </td>
+                    {% else %}
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                    {% endif %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="well">
+            <h4>برادران و خواهران</h4>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>نام خانوادگی</th>
+                    <th>جنسیت</th>
+                    <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if person.Father is not null %}
+                    {% for sib in person.Father.getChildrenFromFather %}
+                        {% if sib != person %}
+                            <tr>
+                                <td>{{ sib.fname }}</td>
+                                <td>{{ sib.lname }}</td>
+                                <td>
+                                    {% if sib.gender == 'm' %}
+                                        مرد
+                                    {% else %}
+                                        زن
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('family_tree_show',{'id':sib.id}) }}">مشاهده</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="span4">
+        <div class="well">
+            <p>نام: {{ person.fname }}</p>
+            <p>نام خانوادگی: {{ person.lname }}</p>
+            <p>تاریخ تولد
+                : {{ person.birthday|date('Y/m/d') }}</p>
+            <p>تاریخ وفات
+                : {{ person.deathday|date('Y/m/d') }}</p>
+            <p>کد ملی: {{ person.nationalcode }}</p>
+            <p>
+                جنسیت:
+                {% if person.gender == 'm' %}
+                    مرد
+                {% else %}
+                    زن
+                {% endif %}
+            </p>
+            <p>تصویر
+                : <img src="{{ asset(person.webPath) }}" style="height: 200px"/>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

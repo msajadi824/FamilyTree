@@ -1,0 +1,101 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{% block title %}شجره نامه{% endblock %}</title>
+
+    <link href="{{ asset('bundles/familytree/css/bootstrap.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('bundles/familytree/css/bootstrap-responsive.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('bundles/familytree/css/docs.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('bundles/familytree/js/google-code-prettify/prettify.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('bundles/familytree/css/font.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('bundles/familytree/css/icons.css') }}" rel="stylesheet"/>
+    <link rel="shortcut icon" href="{{ asset('bundles/familytree/img/favicon.ico') }}"/>
+
+    <style>
+        body {
+            font-family: yekan,tahoma,sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .label_inline {
+            display: inline;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <img src="{{ asset('bundles/familytree/img/kh.png') }}" style="width: 70px;height:70px;margin-right:550px;"/><span class="brand" style="float: left">سامانه شجره نامه</span>
+                <ul class="nav" style="direction: rtl; text-align: right; float: right">
+                    {% block menu %}{% endblock %}
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <li class="">
+                            <a href="{{ path('fos_user_security_logout')}}"><img src="{{ asset('bundles/familytree/img/exit.png') }}" style="width: 30px;height: 30px;"/>خروج</a>
+                        </li>
+                        <li class="">
+                            <a href="{{ path('fos_user_profile_show')}}"><img src="{{ asset('bundles/familytree/img/splash.png') }}" style="width: 60px;height: 50px;"/>صفحه ی کاربری</a>
+                        </li>
+                    {% else %}
+                    <li class="">
+                        <a href="{{ path('fos_user_security_login') }}"><img src="{{ asset('bundles/familytree/img/p.png') }}" style="width: 30px;height: 30px;"/>ورود</a>
+                    </li>
+                    <li class="">
+                        <a href="{{ path('fos_user_registration_register')}}"><img src="{{ asset('bundles/familytree/img/fs.png') }}" style="width: 30px;height: 30px;"/>ثبت نام </a>
+                    </li>
+                    {% endif %}
+                    <li class="">
+                        <a href="{{ path('family_tree_homepage')}}"><img src="{{ asset('bundles/familytree/img/home.png') }}" style="width: 30px;height: 30px;"/>  صفحه ی اصلی</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 20px;">
+
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="{{ type }}">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <strong>هشدار!</strong> {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+    {% block body %}
+
+    {% endblock %}
+    </div>
+
+    {#<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>#}
+    <script src="{{ asset('bundles/familytree/js/jquery.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-transition.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-alert.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-modal.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-dropdown.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-scrollspy.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-tab.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-tooltip.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-popover.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-button.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-collapse.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-carousel.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-typeahead.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/bootstrap-affix.js') }}"></script>
+
+    <script src="{{ asset('bundles/familytree/js/holder/holder.js') }}"></script>
+    <script src="{{ asset('bundles/familytree/js/google-code-prettify/prettify.js') }}"></script>
+
+    <script src="{{ asset('bundles/familytree/js/application.js') }}"></script>
+
+    <script type="text/javascript">
+        $(".error").addClass('alert');
+    </script>
+    {% block script %}
+    {% endblock %}
+</body>
+</html>

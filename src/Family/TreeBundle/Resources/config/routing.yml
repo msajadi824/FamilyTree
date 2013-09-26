@@ -1,0 +1,20 @@
+family_tree_homepage:
+    pattern:  /
+    defaults: { _controller: "FamilyTreeBundle:Default:index" }
+
+family_tree_search:
+    pattern:  /search
+    defaults: { _controller: "FamilyTreeBundle:Default:search" }
+    requirements: { _method: post }
+
+family_tree_show:
+    pattern:  /show/{id}
+    defaults: { _controller: "FamilyTreeBundle:Default:show" }
+
+family_tree_register_family:
+    pattern:  /profile/family
+    defaults: { _controller: "FamilyTreeBundle:Default:registerFamily" }
+
+family_tree_register_new_family:
+    pattern:  /profile/new_family/{relation}
+    defaults: { _controller: "FamilyTreeBundle:Default:registerNewFamily" }

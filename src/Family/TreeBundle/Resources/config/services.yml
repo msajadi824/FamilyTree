@@ -1,0 +1,24 @@
+parameters:
+#    family_tree.example.class: Family\TreeBundle\Example
+
+services:
+#    family_tree.example:
+#        class: %family_tree.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    family_tree.registration.form.type:
+        class: Family\TreeBundle\Form\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: family_tree_registration }
+
+    family_tree.fos_events:
+        class: Family\TreeBundle\EventListener\FOSListener
+        arguments: []
+        tags:
+            - { name: kernel.event_subscriber }
+
+    family_tree.profile.form.type:
+        class: Family\TreeBundle\Form\ProfileFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: family_tree_profile }

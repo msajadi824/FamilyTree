@@ -1,0 +1,7 @@
+{% extends "FamilyTreeBundle::main.index.twig" %}
+
+{% block body %}
+    <div class="hero-unit">
+        {{ exception.message|nl2br|format_file_from_text }}
+    </div>
+{% endblock %}

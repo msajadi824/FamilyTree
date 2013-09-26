@@ -1,0 +1,14 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: familytree
+    database_user: root
+    database_password: null
+    mailer_transport: gmail
+    mailer_host: null
+    mailer_user: testebrahimi@gmail.com
+    mailer_password: test1234test
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt

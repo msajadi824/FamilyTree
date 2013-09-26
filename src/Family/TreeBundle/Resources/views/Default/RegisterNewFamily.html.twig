@@ -1,0 +1,14 @@
+{% extends "FamilyTreeBundle::main.index.twig" %}
+{% trans_default_domain 'FOSUserBundle' %}
+{% block body %}
+    <div class="hero-unit" style="max-width: 250px">
+        <h5 style="margin-right: 70px;">ثبت نام</h5>
+        <form action="{{ path('family_tree_register_new_family',{'relation':relation}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
+            {{ form_widget(form) }}
+            <div>
+                <br/>
+                <input style="margin-right: 80px;" type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+{% endblock %}

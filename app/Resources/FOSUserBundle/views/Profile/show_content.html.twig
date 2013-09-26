@@ -1,0 +1,33 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="fos_user_user_show">
+    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+    <p>نام: {{ user.fname }}</p>
+    <p>نام خانوادگی: {{ user.lname }}</p>
+    <p>تاریخ تولد
+        : {{ user.birthday|date('Y/m/d') }}</p>
+    <p>کد ملی: {{ user.nationalcode }}</p>
+    <p>
+        جنسیت:
+        {% if user.gender == 'm' %}
+        مرد
+        {% else %}
+        زن
+        {% endif %}
+    </p>
+    <p>
+        سطح دسترسی:
+        {% if user.gender == 'pub' %}
+            عمومی
+        {% else %}
+            {% if user.gender == 'pro' %}
+                اعضای سایت
+            {% else %}
+وابستگان درجه یک
+            {% endif %}
+        {% endif %}
+    </p>
+    <p>تصویر
+        : <img src="{{ asset(user.webPath) }}" style="height: 200px"/></p>
+</div>

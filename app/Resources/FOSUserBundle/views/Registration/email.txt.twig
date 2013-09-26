@@ -1,0 +1,18 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block subject %}
+    {% autoescape false %}
+    ایمیل فعال سازی {{ user.username }}
+    {% endautoescape %}
+{% endblock %}
+
+{% block body_html %}
+    {% autoescape false %}
+    <div style="direction: rtl;font-weight: bold">
+        {{ user.username }} عزیز خوش آمدید<br/>
+        برای فعال سازی حساب کاربری خود بر روی لینک زیر کلیک کنید:
+<br/>
+        <a href="{{ confirmationUrl }}">{{ confirmationUrl }}</a>
+    </div>
+    {% endautoescape %}
+{% endblock %}

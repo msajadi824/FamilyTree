@@ -1,0 +1,25 @@
+[class^="myicon-"],
+[class*=" myicon-"] {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin-top: 1px;
+    *margin-right: .3em;
+    line-height: 32px;
+    vertical-align: text-top;
+    background-image: url("../img/icons2.png");
+    background-position: 32px 32px;
+    background-repeat: no-repeat;
+}
+
+.myicon-trash {
+    background-position: -640px -180px;
+}
+
+.myicon-home {
+    background-position: -27px -177px;
+}
+
+.myicon-pen {
+    background-position: -385px -945px;
+}

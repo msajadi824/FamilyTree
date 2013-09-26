@@ -1,0 +1,146 @@
+{% extends "FamilyTreeBundle::main.index.twig" %}
+
+{% block body %}
+    <a class="btn btn-primary" href="{{ path('fos_user_profile_edit') }}">ویرایش نمایه</a>
+    <a class="btn btn-primary" href="{{ path('fos_user_change_password') }}">تغییر رمز عبور</a>
+    <a class="btn btn-primary" href="{{ path('family_tree_register_family') }}">ویرایش اعضای خانواده</a>
+    <br/><br/>
+    <div class="row">
+        <div class="span4">
+            <div class="well">
+                <h4>همسران</h4>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>مشاهده</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for pertner in user.partners %}
+                        <tr>
+                            <td>{{ pertner.Person2.fname }}</td>
+                            <td>{{ pertner.Person2.lname }}</td>
+                            <td><a href="{{ path('family_tree_show',{'id':pertner.Person2.id}) }}">مشاهده</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="well">
+                <h4>فرزندان</h4>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>جنسیت</th>
+                        <th>مشاهده</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if user.gender == 'm' %}
+                        {% set children = user.ChildrenFromFather %}
+                    {% else %}
+                        {% set children = user.ChildrenFromMother %}
+                    {% endif %}
+                    {% for child in children %}
+                        <tr>
+                            <td>{{ child.fname }}</td>
+                            <td>{{ child.lname }}</td>
+                            <td>
+                                {% if child.gender == 'm' %}
+                                مرد
+                                {% else %}
+                                زن
+                                {% endif %}
+                            </td>
+                            <td><a href="{{ path('family_tree_show',{'id':child.id}) }}">مشاهده</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="span4">
+            <div class="well">
+                <h4>والدین</h4>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>نسبت</th>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>مشاهده</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>پدر</td>
+                            {% if user.Father is not null %}
+                                <td>{{ user.Father.fname }}</td>
+                                <td>{{ user.Father.lname }}</td>
+                                <td><a href="{{ path('family_tree_show',{'id':user.Father.id}) }}">مشاهده</a></td>
+                            {% else %}
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                            {% endif %}
+                        </tr>
+                        <tr>
+                            <td>مادر</td>
+                            {% if user.Mother is not null %}
+                                <td>{{ user.Mother.fname }}</td>
+                                <td>{{ user.Mother.lname }}</td>
+                                <td><a href="{{ path('family_tree_show',{'id':user.Mother.id}) }}">مشاهده</a></td>
+                            {% else %}
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="well">
+                <h4>برادران و خواهران</h4>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>جنسیت</th>
+                        <th>مشاهده</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if user.Father is not null %}
+                    {% for sib in user.Father.getChildrenFromFather %}
+                        {% if sib != user %}
+                        <tr>
+                            <td>{{ sib.fname }}</td>
+                            <td>{{ sib.lname }}</td>
+                            <td>
+                                {% if sib.gender == 'm' %}
+                                    مرد
+                                {% else %}
+                                    زن
+                                {% endif %}
+                            </td>
+                            <td><a href="{{ path('family_tree_show',{'id':sib.id}) }}">مشاهده</a></td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="span4">
+            <div class="well">
+                {% include "FOSUserBundle:Profile:show_content.html.twig" %}
+            </div>
+        </div>
+    </div>
+{% endblock body %}
