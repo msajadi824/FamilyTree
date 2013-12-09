@@ -23,12 +23,12 @@ class partner
     private $id;
 
     /** 
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $divorceday;
 
     /** 
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $marriageday;
 
@@ -58,7 +58,7 @@ class partner
     /**
      * Set divorceday
      *
-     * @param \DateTime $divorceday
+     * @param string $divorceday
      * @return partner
      */
     public function setDivorceday($divorceday)
@@ -71,7 +71,7 @@ class partner
     /**
      * Get divorceday
      *
-     * @return \DateTime 
+     * @return string
      */
     public function getDivorceday()
     {
@@ -81,7 +81,7 @@ class partner
     /**
      * Set marriageday
      *
-     * @param \DateTime $marriageday
+     * @param string $marriageday
      * @return partner
      */
     public function setMarriageday($marriageday)
@@ -94,7 +94,7 @@ class partner
     /**
      * Get marriageday
      *
-     * @return \DateTime 
+     * @return string
      */
     public function getMarriageday()
     {

@@ -41,14 +41,14 @@ class person extends BaseUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="date", nullable=false, name="birthday")
+     * @ORM\Column(type="string", nullable=false, name="birthday")
      */
     private $birthday;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="date", nullable=true, name="deathday")
+     * @ORM\Column(type="string", nullable=true, name="deathday")
      */
     private $deathday;
 
@@ -193,7 +193,7 @@ class person extends BaseUser
     /**
      * Set birthday
      *
-     * @param \DateTime $birthday
+     * @param string $birthday
      * @return person
      */
     public function setBirthday($birthday)
@@ -206,7 +206,7 @@ class person extends BaseUser
     /**
      * Get birthday
      *
-     * @return \DateTime 
+     * @return string
      */
     public function getBirthday()
     {
@@ -216,7 +216,7 @@ class person extends BaseUser
     /**
      * Set deathday
      *
-     * @param \DateTime $deathday
+     * @param string $deathday
      * @return person
      */
     public function setDeathday($deathday)
@@ -229,7 +229,7 @@ class person extends BaseUser
     /**
      * Get deathday
      *
-     * @return \DateTime 
+     * @return string
      */
     public function getDeathday()
     {

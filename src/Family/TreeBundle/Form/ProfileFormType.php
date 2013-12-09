@@ -11,8 +11,8 @@ class ProfileFormType extends BaseType
         $builder
             ->add('fname','text',array('label'=>'نام'))
             ->add('lname','text',array('label'=>'نام خانوادگی'))
-            ->add('birthday','date',array('label'=>'تاریخ تولد'))
-            ->add('deathday','date',array('label'=>'تاریخ وفات'))
+            ->add('birthday','text',array('label'=>'تاریخ تولد','attr'=>array('class'=> 'pdate')))
+            ->add('deathday','text',array('required'=>false,'label'=>'تاریخ وفات','attr'=>array('class'=> 'pdate')))
             ->add('nationalcode','text',array('label'=>'کد ملی'))
             ->add('gender','choice',array('label'=>'جنسیت','choices' => array('m' => 'مرد', 'f' => 'زن')))
             ->add('permission','choice',array('label'=>'سطح دسترسی','choices' => array('pub' => 'عمومی', 'pro' => 'اعضای سایت', 'pri' => 'اقوام درجه یک')))

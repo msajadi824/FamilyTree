@@ -11,7 +11,7 @@ class RegistrationFormType extends BaseType
         $builder
             ->add('fname','text',array('label'=>'نام'))
             ->add('lname','text',array('label'=>'نام خانوادگی'))
-            ->add('birthday','date',array('label'=>'تاریخ تولد'))
+            ->add('birthday','text',array('label'=>'تاریخ تولد','attr'=>array('class'=>'pdate')))
             ->add('nationalcode','text',array('label'=>'کد ملی'))
             ->add('gender','choice',array('label'=>'جنسیت','choices' => array('m' => 'مرد', 'f' => 'زن')))
             ->add('file','file',array('label'=>'عکس'))

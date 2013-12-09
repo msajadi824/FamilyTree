@@ -5,3 +5,10 @@
 {% include "FOSUserBundle:Profile:edit_content.html.twig" %}
 </div>
 {% endblock body %}
+
+{% block script %}
+<script type="text/javascript">
+    var objCal1 = new AMIB.persianCalendar( 'objCal1', 'fos_user_profile_form_birthday' );
+    var objCal2 = new AMIB.persianCalendar( 'objCal2', 'fos_user_profile_form_deathday' );
+</script>
+{% endblock %}

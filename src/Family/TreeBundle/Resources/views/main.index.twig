@@ -10,6 +10,7 @@
     <link href="{{ asset('bundles/familytree/js/google-code-prettify/prettify.css') }}" rel="stylesheet"/>
     <link href="{{ asset('bundles/familytree/css/font.css') }}" rel="stylesheet"/>
     <link href="{{ asset('bundles/familytree/css/icons.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('bundles/familytree/css/js-persian-cal.css') }}" rel="stylesheet"/>
     <link rel="shortcut icon" href="{{ asset('bundles/familytree/img/favicon.ico') }}"/>
 
     <style>
@@ -29,7 +30,8 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <img src="{{ asset('bundles/familytree/img/kh.png') }}" style="width: 70px;height:70px;margin-right:550px;"/><span class="brand" style="float: left">سامانه شجره نامه</span>
+                <span class="brand" style="float: left">سامانه شجره نامه</span>
+                <img src="{{ asset('bundles/familytree/img/kh.png') }}" style="width: 50px;height:50px;float: left;margin-left: 10px"/>
                 <ul class="nav" style="direction: rtl; text-align: right; float: right">
                     {% block menu %}{% endblock %}
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
@@ -55,7 +57,7 @@
         </div>
     </div>
 
-    <div class="container" style="margin-top: 20px;">
+    <div class="container" style="margin-top: 50px;">
 
         {% for type, messages in app.session.flashbag.all() %}
             {% for message in messages %}
@@ -91,6 +93,8 @@
     <script src="{{ asset('bundles/familytree/js/google-code-prettify/prettify.js') }}"></script>
 
     <script src="{{ asset('bundles/familytree/js/application.js') }}"></script>
+
+    <script src="{{ asset('bundles/familytree/js/js-persian-cal.min.js') }}"></script>
 
     <script type="text/javascript">
         $(".error").addClass('alert');
