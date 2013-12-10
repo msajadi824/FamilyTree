@@ -1,0 +1,10 @@
+# Bootstrap
+app/bootstrap*
+
+# Symfony directories
+vendor/*
+*/logs/*
+*/cache/*
+
+# phpstorm
+.idea/workspace.xml
