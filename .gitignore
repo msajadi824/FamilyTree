@@ -8,3 +8,5 @@ vendor/*
 
 # phpstorm
 .idea/workspace.xml
+
+*.php~
