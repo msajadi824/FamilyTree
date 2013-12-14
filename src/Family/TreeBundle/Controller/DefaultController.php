@@ -153,42 +153,42 @@ class DefaultController extends Controller
             return new Response('myself');
 
         if($user->getFather() == $person)
-            return new Response( 'father');
+            return new Response('father');
 
         if ($user->getMother() == $person)
-            return new Response( 'mother');
+            return new Response('mother');
 
         if($person->getFather() == $user || $person->getMother() == $user)
-            return new Response( 'child');
+            return new Response('child');
 
         $em= $this->getDoctrine()->getManager();
 
         if(    ($user->getFather() != null && $user->getFather() == $person->getFather())
             || ($user->getMother() != null && $user->getMother() == $person->getMother())  )
-            return new Response( 'sibling');
+            return new Response('sibling');
 
         $findpartner1 = $em->getRepository('FamilyTreeBundle:partner')->findOneBy(array('Person'=>$person,'Person2'=>$user));
         $findpartner2 = $em->getRepository('FamilyTreeBundle:partner')->findOneBy(array('Person'=>$user,'Person2'=>$person));
         if(count($findpartner1)>0 || count($findpartner2)>0)
-            return new Response( 'partner');
+            return new Response('partner');
 
         if($user->getFather()!= null && $user->getFather()->getFather()== $person)
-            return new Response('father_father');
+            return new Response('paternal grandfather');
 
         if($user->getFather()!= null && $user->getFather()->getMother()== $person)
-            return new Response('father_mother');
+            return new Response('paternal grandmother');
 
-        if($user->getMother()!= null && $user->getFather()->getFather()== $person)
-            return new Response('mother_father');
+        if($user->getMother()!= null && $user->getMother()->getFather()== $person)
+            return new Response('maternal grandfather');
 
-        if($user->getMother()!= null && $user->getFather()->getMother()== $person)
-            return new Response('mother_mother');
+        if($user->getMother()!= null && $user->getMother()->getMother()== $person)
+            return new Response('maternal grandmother');
 
         if($user->getFather()!= null && $person->getFather()!= null && $user->getFather()->getFather() == $person->getFather())
-            return new Response('father_sibling');
+            return new Response('father sibling');
 
         if($user->getMother()!= null && $person->getFather()!= null && $user->getMother()->getFather() == $person->getFather())
-            return new Response('father_sibling');
+            return new Response('father sibling');
 
         return  new Response('none');
     }
@@ -200,7 +200,7 @@ class DefaultController extends Controller
         $user = $this->getUser();
         $person = $em->getRepository('FamilyTreeBundle:person')->find($personid);
 
-        $this->removeRelation($person);
+        $this->removeRelation($person, $relation);
 
         switch ($relation)
         {
@@ -252,7 +252,7 @@ class DefaultController extends Controller
         }
     }
 
-    public function removeRelation(person $person)
+    public function removeRelation(person $person, $relation)
     {
         $em= $this->getDoctrine()->getManager();
         $user = $this->getUser();
@@ -265,7 +265,7 @@ class DefaultController extends Controller
 
         if($user->getFather()==$person->getFather()) $person->setFather(null);
 
-        $qb = $em->createQueryBuilder()
+        $em->createQueryBuilder()
             ->delete('FamilyTreeBundle:partner', 'p')
             ->orWhere('p.Person = :pa and p.Person2 = :pb')
             ->orWhere('p.Person = :pb and p.Person2 = :pa')
