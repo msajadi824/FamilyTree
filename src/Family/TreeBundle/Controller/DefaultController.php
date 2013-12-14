@@ -188,7 +188,7 @@ class DefaultController extends Controller
             return new Response('father sibling');
 
         if($user->getMother()!= null && $person->getFather()!= null && $user->getMother()->getFather() == $person->getFather())
-            return new Response('father sibling');
+            return new Response('mother sibling');
 
         return  new Response('none');
     }
@@ -256,20 +256,50 @@ class DefaultController extends Controller
     {
         $em= $this->getDoctrine()->getManager();
         $user = $this->getUser();
+        $user = new person();
 
-        if($person->getFather()==$user) $person->setFather(null);
-        if($user->getFather()==$person) $user->setFather(null);
+        switch ($relation)
+        {
+            case 'father':
+                $user->setFather(null); break;
 
-        if($person->getMother()==$user) $person->setMother(null);
-        if($user->getMother()==$person) $user->setMother(null);
+            case 'mother':
+                $user->setMother(null); break;
 
-        if($user->getFather()==$person->getFather()) $person->setFather(null);
+            case 'child':
+                if($person->getFather()==$user) $person->setFather(null);
+                if($person->getMother()==$user) $person->setMother(null);
+                break;
 
-        $em->createQueryBuilder()
-            ->delete('FamilyTreeBundle:partner', 'p')
-            ->orWhere('p.Person = :pa and p.Person2 = :pb')
-            ->orWhere('p.Person = :pb and p.Person2 = :pa')
-            ->setParameter('pa', $person)->setParameter('pb', $user)
-            ->getQuery()->execute();
+            case 'sibling':
+                $person->setFather(null); break;
+
+            case 'partner':
+                $em->createQueryBuilder()
+                    ->delete('FamilyTreeBundle:partner', 'p')
+                    ->orWhere('p.Person = :pa and p.Person2 = :pb')
+                    ->orWhere('p.Person = :pb and p.Person2 = :pa')
+                    ->setParameter('pa', $person)->setParameter('pb', $user)
+                    ->getQuery()->execute();
+                break;
+
+            case 'paternal grandfather':
+                $user->getFather()->setFather(null); break;
+
+            case 'paternal grandmother':
+                $user->getFather()->setMother(null); break;
+
+            case 'maternal grandfather':
+                $user->getMother()->setFather(null); break;
+
+            case 'maternal grandmother':
+                $user->getMother()->setFather(null); break;
+
+            case 'father sibling':
+                $person->setFather(null); break;
+
+            case 'mother sibling':
+                $person->setFather(null); break;
+        }
     }
 }
