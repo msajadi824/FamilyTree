@@ -247,6 +247,24 @@ class DefaultController extends Controller
                 $em->persist($partner2);
                 break;
 
+            case 'paternal grandfather':
+                $user->getFather()->setFather($person); break;
+
+            case 'paternal grandmother':
+                $user->getFather()->setMother($person); break;
+
+            case 'maternal grandfather':
+                $user->getMother()->setFather($person); break;
+
+            case 'maternal grandmother':
+                $user->getMother()->setMother($person); break;
+
+            case 'father sibling':
+                $person->setFather($user->getFather()->getFather()); break;
+
+            case 'mother sibling':
+                $person->setFather($user->getMother()->getFather()); break;
+
             case 'none':
                 break;
         }
@@ -256,7 +274,6 @@ class DefaultController extends Controller
     {
         $em= $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        $user = new person();
 
         switch ($relation)
         {
@@ -267,8 +284,10 @@ class DefaultController extends Controller
                 $user->setMother(null); break;
 
             case 'child':
-                if($person->getFather()==$user) $person->setFather(null);
-                if($person->getMother()==$user) $person->setMother(null);
+                if($user->getGender()=='m')
+                    $person->setFather(null);
+                else
+                    $person->setMother(null);
                 break;
 
             case 'sibling':
@@ -293,7 +312,7 @@ class DefaultController extends Controller
                 $user->getMother()->setFather(null); break;
 
             case 'maternal grandmother':
-                $user->getMother()->setFather(null); break;
+                $user->getMother()->setMother(null); break;
 
             case 'father sibling':
                 $person->setFather(null); break;
