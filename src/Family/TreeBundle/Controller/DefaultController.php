@@ -172,6 +172,24 @@ class DefaultController extends Controller
         if(count($findpartner1)>0 || count($findpartner2)>0)
             return new Response( 'partner');
 
+        if($user->getFather()!= null && $user->getFather()->getFather()== $person)
+            return new Response('father_father');
+
+        if($user->getFather()!= null && $user->getFather()->getMother()== $person)
+            return new Response('father_mother');
+
+        if($user->getMother()!= null && $user->getFather()->getFather()== $person)
+            return new Response('mother_father');
+
+        if($user->getMother()!= null && $user->getFather()->getMother()== $person)
+            return new Response('mother_mother');
+
+        if($user->getFather()!= null && $person->getFather()!= null && $user->getFather()->getFather() == $person->getFather())
+            return new Response('father_sibling');
+
+        if($user->getMother()!= null && $person->getFather()!= null && $user->getMother()->getFather() == $person->getFather())
+            return new Response('father_sibling');
+
         return  new Response('none');
     }
 
@@ -234,7 +252,7 @@ class DefaultController extends Controller
         }
     }
 
-    public function removeRelation($person)
+    public function removeRelation(person $person)
     {
         $em= $this->getDoctrine()->getManager();
         $user = $this->getUser();
