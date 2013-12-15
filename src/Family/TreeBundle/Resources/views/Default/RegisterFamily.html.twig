@@ -91,7 +91,7 @@
                         {% else %}
                             <td>--</td>
                             <td>--</td>
-                            <td><a href="{{ path('family_tree_register_new_family',{'relation':'fatherMother'}) }}">ثبت جدید</a></td>
+                            <td><a href="{{ path('family_tree_register_new_family',{'relation':'maternal grandfather'}) }}">ثبت جدید</a></td>
                         {% endif %}
                     </tr>
                     <tr>
@@ -106,7 +106,7 @@
                         {% else %}
                             <td>--</td>
                             <td>--</td>
-                            <td><a href="{{ path('family_tree_register_new_family',{'relation':'motherMother'}) }}">ثبت جدید</a></td>
+                            <td><a href="{{ path('family_tree_register_new_family',{'relation':'maternal grandmother'}) }}">ثبت جدید</a></td>
                         {% endif %}
                     </tr>
                     </tbody>
@@ -126,7 +126,7 @@
                     <tbody>
                     {% if user.Mother is not null and user.Mother.Father is not null %}
                         {% for sib in user.Mother.Father.getChildrenFromFather %}
-                            {% if sib != user %}
+                            {% if sib != user.Mother %}
                                 <tr>
                                     <td>{{ sib.fname }}</td>
                                     <td>{{ sib.lname }}</td>
@@ -147,7 +147,7 @@
                     {% endif %}
                     </tbody>
                 </table>
-                <a style="margin-right: 130px;" href="{{ path('family_tree_register_new_family',{'relation':'sibling'}) }}" class="btn btn-info">ثبت جدید</a>
+                <a style="margin-right: 130px;" href="{{ path('family_tree_register_new_family',{'relation':'mother sibling'}) }}" class="btn btn-info">ثبت جدید</a>
             </div>
         </div>
         <div class="span4">
@@ -257,7 +257,7 @@
                         {% else %}
                             <td>--</td>
                             <td>--</td>
-                            <td><a href="{{ path('family_tree_register_new_family',{'relation':'fatherFather'}) }}">ثبت جدید</a></td>
+                            <td><a href="{{ path('family_tree_register_new_family',{'relation':'paternal grandfather'}) }}">ثبت جدید</a></td>
                         {% endif %}
                     </tr>
                     <tr>
@@ -272,7 +272,7 @@
                         {% else %}
                             <td>--</td>
                             <td>--</td>
-                            <td><a href="{{ path('family_tree_register_new_family',{'relation':'motherFather'}) }}">ثبت جدید</a></td>
+                            <td><a href="{{ path('family_tree_register_new_family',{'relation':'paternal grandmother'}) }}">ثبت جدید</a></td>
                         {% endif %}
                     </tr>
                     </tbody>
@@ -292,7 +292,7 @@
                     <tbody>
                     {% if user.Father is not null and user.Father.Father is not null %}
                         {% for sib in user.Father.Father.getChildrenFromFather %}
-                            {% if sib != user %}
+                            {% if sib != user.Father %}
                                 <tr>
                                     <td>{{ sib.fname }}</td>
                                     <td>{{ sib.lname }}</td>
@@ -313,7 +313,7 @@
                     {% endif %}
                     </tbody>
                 </table>
-                <a style="margin-right: 130px;" href="{{ path('family_tree_register_new_family',{'relation':'sibling'}) }}" class="btn btn-info">ثبت جدید</a>
+                <a style="margin-right: 130px;" href="{{ path('family_tree_register_new_family',{'relation':'father sibling'}) }}" class="btn btn-info">ثبت جدید</a>
             </div>
         </div>
         <div class="span4">
@@ -357,14 +357,29 @@
                                 {% endif %}
                             </td>
                             <td>
+                                {% set male = (person.gender == 'm') %}
                                 {% set relationtype = render(controller('FamilyTreeBundle:Default:checkHasRelation', { 'person': person  })) %}
                                 <select style="width: 100px" onchange="$('#id').val({{ person.id }});$('#relation').val($(this).val());$('#formsearch').submit();">
-                                    <option {% if relationtype=='none'   %}selected{% endif %} value="none">هیچکدام</option>
-                                    {% if person.gender == 'm' %}<option {% if relationtype=='father' %}selected{% endif %} value="father">پدر</option>{% endif %}
-                                    {% if person.gender == 'f' %}<option {% if relationtype=='mother' %}selected{% endif %} value="mother">مادر</option>{% endif %}
-                                    <option {% if relationtype=='sibling' %}selected{% endif %} value="sibling">برادر یا خواهر</option>
-                                    <option {% if relationtype=='child'  %}selected{% endif %} value="child">فرزند</option>
-                                    {% if person.gender != user.gender %}<option {% if relationtype=='partner'%}selected{% endif %} value="partner">همسر</option>{% endif %}
+                                    <option {% if relationtype=='none' %}selected{% endif %} value="none">هیچکدام</option>
+
+                                    {% if     male %}<option {% if relationtype=='father' %}selected{% endif %} value="father">پدر</option>{% endif %}
+                                    {% if not male %}<option {% if relationtype=='mother' %}selected{% endif %} value="mother">مادر</option>{% endif %}
+
+                                    {% if     male %}<option {% if relationtype=='sibling' %}selected{% endif %} value="sibling">برادر</option>{% endif %}
+                                    {% if not male %}<option {% if relationtype=='sibling' %}selected{% endif %} value="sibling">خواهر</option>{% endif %}
+
+                                    <option {% if relationtype=='child' %}selected{% endif %} value="child">فرزند</option>
+                                    {% if person.gender != user.gender %}<option {% if relationtype=='partner' %}selected{% endif %} value="partner">همسر</option>{% endif %}
+
+                                    {% if     male %}<option {% if relationtype=='father sibling' %}selected{% endif %} value="father sibling">عمو</option>{% endif %}
+                                    {% if not male %}<option {% if relationtype=='father sibling' %}selected{% endif %} value="father sibling">عمه</option>{% endif %}
+                                    {% if     male %}<option {% if relationtype=='mother sibling' %}selected{% endif %} value="mother sibling">دایی</option>{% endif %}
+                                    {% if not male %}<option {% if relationtype=='mother sibling' %}selected{% endif %} value="mother sibling">خاله</option>{% endif %}
+
+                                    {% if     male %}<option {% if relationtype=='paternal grandfather' %}selected{% endif %} value="paternal grandfather">پدربزرگ پدری</option>{% endif %}
+                                    {% if not male %}<option {% if relationtype=='paternal grandmother' %}selected{% endif %} value="paternal grandmother">مادربزرگ پدری</option>{% endif %}
+                                    {% if     male %}<option {% if relationtype=='maternal grandfather' %}selected{% endif %} value="maternal grandfather">پدربزرگ مادری</option>{% endif %}
+                                    {% if not male %}<option {% if relationtype=='maternal grandmother' %}selected{% endif %} value="maternal grandmother">مادربزرگ مادری</option>{% endif %}
                                 </select>
                             </td>
                         </tr>

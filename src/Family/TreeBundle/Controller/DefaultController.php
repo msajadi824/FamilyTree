@@ -81,7 +81,6 @@ class DefaultController extends Controller
         $user = $this->getUser();
 
         $personsearch = new person();
-        $personsearch->setLname($user->getLname());
         $form = $this->createForm(new personSearchType(),$personsearch);
 
         if($request->isMethod('POST'))
@@ -200,7 +199,8 @@ class DefaultController extends Controller
         $user = $this->getUser();
         $person = $em->getRepository('FamilyTreeBundle:person')->find($personid);
 
-        $this->removeRelation($person, $relation);
+        $beforeRelation = $this->checkHasRelationAction($person)->getContent();
+        $this->removeRelation($person, $beforeRelation);
 
         switch ($relation)
         {

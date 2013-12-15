@@ -600,4 +600,9 @@ class person extends BaseUser
     {
         return $this->deleted;
     }
+
+    public function __toString()
+    {
+        return $this->getFname()." ".$this->getLname();
+    }
 }
