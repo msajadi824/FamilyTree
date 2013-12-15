@@ -305,7 +305,7 @@
                 {% endif %}
             </p>
             <p>تصویر
-                : <img src="{{ asset(person.webPath) }}" style="height: 200px"/>
+                : <img src="{{ asset(person.webPath) }}?{{ 'now'|date("Unix Timestamp") }}" style="height: 200px"/>
             </p>
         </div>
     </div>

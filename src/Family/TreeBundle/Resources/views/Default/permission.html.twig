@@ -11,6 +11,20 @@
                     <input type="submit" class="btn" value="افزودن"/>
                 </form>
             </div>
+            <div class="well">
+                    سطح دسترسی نمایه شما:
+                <b>
+                    {% if app.user.permission == 'pub' %}
+                        عمومی
+                    {% else %}
+                        {% if app.user.permission == 'pro' %}
+                            اعضای سایت
+                        {% else %}
+                            وابستگان درجه یک
+                        {% endif %}
+                    {% endif %}
+                </b>
+            </div>
         </div>
         <div class="span8">
             <table class="table table-striped table-bordered table-hover">
