@@ -29,5 +29,5 @@
         {% endif %}
     </p>
     <p>تصویر
-        : <img src="{{ asset(user.webPath) }}" style="height: 200px"/></p>
+        : <img src="{{ asset(user.webPath) }}?{{ 'now'|date("Unix Timestamp") }}" style="height: 200px"/></p>
 </div>

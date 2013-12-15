@@ -18,6 +18,7 @@ class FOSListener implements EventSubscriberInterface
             FOSUserEvents::REGISTRATION_INITIALIZE => 'onRegistrationInit',
             FOSUserEvents::REGISTRATION_SUCCESS => 'onRegistrationSuccess',
             FOSUserEvents::REGISTRATION_COMPLETED => 'onRegistrationCompleted',
+            FOSUserEvents::PROFILE_EDIT_COMPLETED => 'onProfileEditCompleted',
         );
     }
 
@@ -35,6 +36,12 @@ class FOSListener implements EventSubscriberInterface
     }
 
     public function onRegistrationCompleted(FilterUserResponseEvent $event)
+    {
+        $user = $event->getUser();
+        $user->upload();
+    }
+
+    public function onProfileEditCompleted(FilterUserResponseEvent $event)
     {
         $user = $event->getUser();
         $user->upload();
