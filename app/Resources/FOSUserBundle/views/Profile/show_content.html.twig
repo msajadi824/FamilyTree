@@ -18,10 +18,10 @@
     </p>
     <p>
         سطح دسترسی:
-        {% if user.gender == 'pub' %}
+        {% if user.permission == 'pub' %}
             عمومی
         {% else %}
-            {% if user.gender == 'pro' %}
+            {% if user.permission == 'pro' %}
                 اعضای سایت
             {% else %}
 وابستگان درجه یک

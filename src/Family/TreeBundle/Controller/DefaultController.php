@@ -54,22 +54,21 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('این فرد وجود ندارد');
         }
 
-        if($entity->getPermission() == 'pro' && $this->getUser()==null)
+        if($entity->getPermission() == 'pro')
         {
-            throw new \Exception('شما مجاز به مشاهده این صفحه نیستید');
+            if($this->getUser()==null)
+                throw new \Exception('شما مجاز به مشاهده این صفحه نیستید');
+            else
+                $this->checkPermission($entity);
         }
 
         if($entity->getPermission() == 'pri')
         {
             if($this->getUser()==null)
-            {
                 throw new \Exception('شما مجاز به مشاهده این صفحه نیستید');
-            }
             else
-            {
-                if($this->checkHasRelationAction($entity)->getContent()=='none')
+                if(!$this->checkPermission($entity) && $this->checkHasRelationAction($entity)->getContent()=='none')
                     throw new \Exception('شما مجاز به مشاهده این صفحه نیستید');
-            }
         }
 
         return $this->render('FamilyTreeBundle:Default:show.html.twig', array(
@@ -381,5 +380,16 @@ class DefaultController extends Controller
                 $person->setMother(null);
                 break;
         }
+    }
+
+    public function checkPermission(person $person)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $permission = $em->getRepository("FamilyTreeBundle:permission")->findOneBy(array("person"=>$this->getUser(),"user"=>$person));
+
+        if($permission && !$permission->getAccess())
+            throw new \Exception('شما مجاز به مشاهده این صفحه نیستید');
+
+        return $permission?true:false;
     }
 }
