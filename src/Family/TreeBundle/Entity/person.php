@@ -123,6 +123,16 @@ class person extends BaseUser
     private $Mother;
 
     /**
+     * @ORM\OneToMany(targetEntity="Family\TreeBundle\Entity\permission", mappedBy="user")
+     */
+    private $permissionUser;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Family\TreeBundle\Entity\permission", mappedBy="person")
+     */
+    private $permissionPerson;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -604,5 +614,71 @@ class person extends BaseUser
     public function __toString()
     {
         return $this->getFname()." ".$this->getLname();
+    }
+
+    /**
+     * Add permissionUser
+     *
+     * @param \Family\TreeBundle\Entity\permission $permissionUser
+     * @return person
+     */
+    public function addPermissionUser(\Family\TreeBundle\Entity\permission $permissionUser)
+    {
+        $this->permissionUser[] = $permissionUser;
+    
+        return $this;
+    }
+
+    /**
+     * Remove permissionUser
+     *
+     * @param permission $permissionUser
+     */
+    public function removePermissionUser(permission $permissionUser)
+    {
+        $this->permissionUser->removeElement($permissionUser);
+    }
+
+    /**
+     * Get permissionUser
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPermissionUser()
+    {
+        return $this->permissionUser;
+    }
+
+    /**
+     * Add permissionPerson
+     *
+     * @param \Family\TreeBundle\Entity\permission $permissionPerson
+     * @return person
+     */
+    public function addPermissionPerson(\Family\TreeBundle\Entity\permission $permissionPerson)
+    {
+        $this->permissionPerson[] = $permissionPerson;
+    
+        return $this;
+    }
+
+    /**
+     * Remove permissionPerson
+     *
+     * @param \Family\TreeBundle\Entity\permission $permissionPerson
+     */
+    public function removePermissionPerson(\Family\TreeBundle\Entity\permission $permissionPerson)
+    {
+        $this->permissionPerson->removeElement($permissionPerson);
+    }
+
+    /**
+     * Get permissionPerson
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPermissionPerson()
+    {
+        return $this->permissionPerson;
     }
 }
