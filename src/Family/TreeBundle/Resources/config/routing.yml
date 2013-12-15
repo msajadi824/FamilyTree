@@ -18,3 +18,11 @@ family_tree_register_family:
 family_tree_register_new_family:
     pattern:  /profile/new_family/{relation}/
     defaults: { _controller: "FamilyTreeBundle:Default:registerNewFamily" }
+
+family_tree_register_permission:
+    pattern:  /profile/permission
+    defaults: { _controller: "FamilyTreeBundle:Default:permission" }
+
+family_tree_register_permission_delete:
+    pattern:  /profile/permission/delete/{id}/
+    defaults: { _controller: "FamilyTreeBundle:Default:permissionDelete" }

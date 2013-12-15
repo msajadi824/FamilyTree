@@ -1,0 +1,47 @@
+{% extends "FamilyTreeBundle::main.index.twig" %}
+
+{% block body %}
+    <div class="row">
+        <div class="span4">
+            <div class="well">
+                <h4>افزودن مجوز جدید</h4>
+
+                <form action="{{ path('family_tree_register_permission') }}" method="post">
+                    {{ form_widget(form) }}
+                    <input type="submit" class="btn" value="افزودن"/>
+                </form>
+            </div>
+        </div>
+        <div class="span8">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>نام خانوادگی</th>
+                    <th>مجوز</th>
+                    <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for permission in permissions %}
+                    <tr>
+                        <td>{{ permission.person.fname }}</td>
+                        <td>{{ permission.person.lname }}</td>
+                        <td>
+                            {% if permission.access == true %}
+                                دارد
+                            {% else %}
+                            ندارد
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('family_tree_show',{'id':permission.person.id}) }}">مشاهده</a><br/>
+                            <a href="{{ path('family_tree_register_permission_delete',{'id':permission.id}) }}">حذف</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

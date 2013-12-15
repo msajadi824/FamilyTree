@@ -3,7 +3,9 @@
 namespace Family\TreeBundle\Controller;
 
 use Family\TreeBundle\Entity\partner;
+use Family\TreeBundle\Entity\permission;
 use Family\TreeBundle\Entity\person;
+use Family\TreeBundle\Form\permissionType;
 use Family\TreeBundle\Form\personSearchType;
 use Family\TreeBundle\Form\RegistrationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -143,6 +145,54 @@ class DefaultController extends Controller
         ));
     }
 
+    public function permissionAction(Request $request)
+    {
+        $user = $this->getUser();
+
+        $permission = new permission();
+        $permission->setUser($user);
+        $form = $this->createForm(new permissionType($user),$permission);
+
+        if($request->isMethod("post"))
+        {
+            $form->handleRequest($request);
+            if($form->isValid())
+            {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($permission);
+                $em->flush();
+            }
+        }
+
+        $permissions = $user->getPermissionUser();
+
+        return $this->render("FamilyTreeBundle:Default:permission.html.twig",array(
+                'permissions'=> $permissions,
+                'form' => $form->createView()
+            ));
+    }
+
+    public function permissionDeleteAction($id)
+    {
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $permission = $em->getRepository("FamilyTreeBundle:permission")->find($id);
+
+        if (!$permission) {
+            throw $this->createNotFoundException('این مجوز وجود ندارد');
+        }
+
+        if ($permission->getUser() != $user) {
+            throw $this->createNotFoundException('این مجوز از شما نیست');
+        }
+
+        $em->remove($permission);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl("family_tree_register_permission"));
+    }
 //    -------------------------------
 
     public function checkHasRelationAction(person $person)
