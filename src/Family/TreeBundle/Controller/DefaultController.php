@@ -221,6 +221,7 @@ class DefaultController extends Controller
                     return;
                 }
                 $person->setFather($user->getFather());
+                $person->setMother($user->getMother());
                 break;
 
             case 'child':
@@ -260,10 +261,14 @@ class DefaultController extends Controller
                 $user->getMother()->setMother($person); break;
 
             case 'father sibling':
-                $person->setFather($user->getFather()->getFather()); break;
+                $person->setFather($user->getFather()->getFather());
+                $person->setMother($user->getFather()->getMother());
+                break;
 
             case 'mother sibling':
-                $person->setFather($user->getMother()->getFather()); break;
+                $person->setFather($user->getMother()->getFather());
+                $person->setMother($user->getMother()->getMother());
+                break;
 
             case 'none':
                 break;
@@ -291,7 +296,9 @@ class DefaultController extends Controller
                 break;
 
             case 'sibling':
-                $person->setFather(null); break;
+                $person->setFather(null);
+                $person->setMother(null);
+                break;
 
             case 'partner':
                 $em->createQueryBuilder()
@@ -315,10 +322,14 @@ class DefaultController extends Controller
                 $user->getMother()->setMother(null); break;
 
             case 'father sibling':
-                $person->setFather(null); break;
+                $person->setFather(null);
+                $person->setMother(null);
+                break;
 
             case 'mother sibling':
-                $person->setFather(null); break;
+                $person->setFather(null);
+                $person->setMother(null);
+                break;
         }
     }
 }
